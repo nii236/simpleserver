@@ -151,8 +151,10 @@ func main() {
 		log.Printf("Serving: https://%s:%s", ip, port)
 		log.Fatalln(ListenAndServeTLSKeyPair(fmt.Sprintf(":%s", port), cert, mux))
 	} else {
-		log.Printf("Serving: http://%s:%s", ip, port)
-		log.Fatalln(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+		mux := http.NewServeMux()
+		mux.Handle("/", ss)
+		log.Printf("Serving :%s", port)
+		log.Fatalln(http.ListenAndServe(fmt.Sprintf(":%s", port), mux))
 	}
 }
 
